@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
-import { auth, logInWithEmailAndPassword } from '../firebase/firebase'
-import { onAuthStateChanged } from 'firebase/auth'
+import { auth, logInWithEmailAndPassword, onAuthStateChanged } from '../firebase/firebase'
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 

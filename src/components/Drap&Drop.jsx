@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-// import { TasksColumbs } from '../assets/taskList';
 import TaskCard from '../components/TaskCard';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { updatedragTodoList } from '../firebase/firebase';

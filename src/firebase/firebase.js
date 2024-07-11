@@ -1,8 +1,9 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from 'firebase/auth';
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth';
 import { getFirestore, query, getDocs, collection, where, addDoc, doc, setDoc, writeBatch, updateDoc, arrayUnion } from 'firebase/firestore'
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid'
+
 const firebaseConfig = {
   apiKey: "AIzaSyCP1mJoDOCkoW9UcYYm2PQbEbjweWc4lOY",
   authDomain: "todolist-7ab65.firebaseapp.com",
@@ -162,5 +163,5 @@ const updatedragTodoList = async ({ uid, toDoListName, newList }) => {
 
 
 
-export { updatedragTodoList, addTaskToTaskColumn, auth, db, logInWithEmailAndPassword, registerWithEmailAndPassword, logOut, fetchTasksForPlaylist, fetchUserPlaylists, getQuery, addtodolistbyName }
+export { updatedragTodoList, addTaskToTaskColumn, auth, db, logInWithEmailAndPassword, registerWithEmailAndPassword, logOut, fetchTasksForPlaylist, fetchUserPlaylists, getQuery, addtodolistbyName, onAuthStateChanged }
 
