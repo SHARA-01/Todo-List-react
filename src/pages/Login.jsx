@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
-import { auth, logInWithEmailAndPassword, onAuthStateChanged } from '../firebase/firebase'
+import { auth } from '../firebase/firebase'
+import { onAuthStateChanged } from '../firebase/CheckAuth'
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { logInWithEmailAndPassword } from '../firebase/HandleLogin';
 
 function Login() {
     const navigate = useNavigate()

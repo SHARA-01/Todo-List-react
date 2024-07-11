@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { registerWithEmailAndPassword } from '../firebase/firebase'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import { registerWithEmailAndPassword } from '../firebase/HandleLogin'
 
 function Register() {
   const [name, setName] = useState('')

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
-import { auth, onAuthStateChanged } from '../firebase/firebase';
+import { auth } from '../firebase/firebase';
+import { onAuthStateChanged } from '../firebase/CheckAuth'
 
 function PrivateRouter() {
     const [authenticated, setAuthenticated] = useState(null);

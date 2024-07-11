@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import DragDrop from './Drap&Drop';
-import { addTaskToTaskColumn, addtodolistbyName, auth, fetchTasksForPlaylist, fetchUserPlaylists, onAuthStateChanged } from '../firebase/firebase';
+import { onAuthStateChanged } from '../firebase/CheckAuth'
+import { auth, } from '../firebase/firebase';
 import { Bounce, toast } from 'react-toastify';
+import { addtodolistbyName } from '../firebase/AddList';
+import { addTaskToTaskColumn } from '../firebase/addtask';
+import { fetchUserPlaylists, fetchTasksForPlaylist } from '../firebase/fetchListData';
 
 function ListAndTask() {
     const [toDoList, setToDoList] = useState(null)

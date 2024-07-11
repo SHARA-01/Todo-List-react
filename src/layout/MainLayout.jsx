@@ -2,7 +2,8 @@ import Navbar from './Navbar'
 import Footer from './Footer'
 import { Outlet } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import { auth, onAuthStateChanged } from '../firebase/firebase';
+import { auth } from '../firebase/firebase';
+import { onAuthStateChanged } from '../firebase/CheckAuth'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
