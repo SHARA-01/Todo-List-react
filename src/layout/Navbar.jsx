@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { onAuthStateChanged } from 'firebase/auth'
-import { auth, logOut } from '../firebase/firebase'
+import { logOut } from '../firebase/firebase'
 import { toast } from 'react-toastify'
 function Navbar({ user }) {
     const location = useLocation();
