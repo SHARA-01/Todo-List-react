@@ -13,7 +13,7 @@ function ListAndTask() {
     const [taskTitle, setTaskTitle] = useState('');
     const [taskDes, setTaskDes] = useState('');
     const [taskDue_date, setDueDate] = useState('');
-    const [taskPriority, setPriority] = useState('Daily');
+    const [taskPriority, setPriority] = useState('Low Priority');
     const [selectTaskid, setSelectTaskId] = useState(null);
     const [TaskColumbs, setTaskcol] = useState(null);
     const [user, setUser] = useState(null)
@@ -41,7 +41,7 @@ function ListAndTask() {
 
 
     const handleAddTask = async () => {
-        if ((user !== null || '') && (selectTaskid !== null || '') && (taskTitle !== '') && (taskDue_date !== '') && (taskDes !== '')) {
+        if ((user !== null) && (selectTaskid !== null) && (taskTitle !== '') && (taskDue_date !== '') && (taskDes !== '')) {
             await addTaskToTaskColumn({ uid: user?.uid, toDoListName: selectTaskid, columnName: taskPriority, taskTitle: taskTitle, taskDes: taskDes, DueDate: taskDue_date, taskPriority: taskPriority })
             setDueDate('')
             setTaskTitle('')
@@ -54,8 +54,10 @@ function ListAndTask() {
             fetchDataOfTasks()
 
         } else {
-            toast.error("All Input fields are required.")
-            console.log("there is some error")
+            if (selectTaskid === null) {
+                toast.error('please add a List first.')
+            }
+            else toast.error("All Input fields are required.")
         }
     }
 
@@ -140,10 +142,10 @@ function ListAndTask() {
                             <label className='py-1 font-semibold text-gray-700' htmlFor="date">Due Date</label>
                             <input value={taskDue_date} onChange={(e) => setDueDate(e.target.value)} className='border-2 px-2 py-1 rounded-md border-black/40 focus:outline-none focus:border-blue-500 ' type="date" name="date" id="" placeholder='Task Title' />
                             <label className='py-1 font-semibold text-gray-700' htmlFor="task">Task Priority</label>
-                            <select defaultValue={'Daily'} value={taskPriority} onChange={(e) => setPriority(e.target.value)} className='border-2 px-2 py-1 rounded-md border-black/40 focus:outline-none focus:border-blue-500 text-gray-600 font-semibold' name="Task Priority" id="">
-                                <option value="Daily">Daily Task</option>
-                                <option value="Important">Important</option>
-                                <option value="Urgent">Urgent</option>
+                            <select defaultValue={'Low Priority'} value={taskPriority} onChange={(e) => setPriority(e.target.value)} className='border-2 px-2 py-1 rounded-md border-black/40 focus:outline-none focus:border-blue-500 text-gray-600 font-semibold' name="Task Priority" id="">
+                                <option value="Low Priority">Low</option>
+                                <option value="Meduim Priority">Medium</option>
+                                <option value="Hign Priority">Hign</option>
                             </select>
                             <button onClick={handleAddTask} className='border border-gray-200 px-3 py-1 rounded-md bg-blue-600 text-white font-semibold hover:bg-white hover:text-blue-500 hover:border-blue-500 active:border-blue-500 active:text-white active:bg-blue-500 '>Add</button>
                         </li>

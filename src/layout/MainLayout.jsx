@@ -19,7 +19,7 @@ function MainLayout() {
 
   useEffect(() => {
     const checkScreenSize = () => {
-      setIsMobile(window.innerWidth < 1200); // Adjust the width as needed for your definition of mobile
+      setIsMobile(window.innerWidth < 1000); // Adjust the width as needed for your definition of mobile
     };
     checkScreenSize();
     window.addEventListener("resize", checkScreenSize);    // Event listener for screen size change

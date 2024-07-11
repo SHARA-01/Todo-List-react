@@ -96,7 +96,10 @@ function DragDrop({ taskColumbs, ListName, userUid }) {
                                                 {...provided.dragHandleProps}
                                                 className=" bg-white border rounded-md border-gray-400 "
                                             >
-                                                <TaskCard item={item} index={index} />
+                                                {
+                                                    console.log(column)
+                                                }
+                                                <TaskCard item={item} index={index} itemCol={column?.title} />
                                             </div>
                                         )}
                                     </Draggable>

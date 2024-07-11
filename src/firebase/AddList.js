@@ -4,19 +4,19 @@ import { db } from "./firebase";
 
 
 const predefinedTaskColumns = {
-    Daily: {
-        id: '01',
-        title: 'Daily Task',
-        items: []
-    },
-    Important: {
+    'Meduim Priority': {
         id: '02',
-        title: 'Important Task',
+        title: 'Meduim Priority',
         items: []
     },
-    Urgent: {
+    'Low Priority': {
+        id: '01',
+        title: 'Low Priority',
+        items: []
+    },
+    'Hign Priority': {
         id: '03',
-        title: 'Urgent Task',
+        title: 'Hign Priority',
         items: []
     }
 };
