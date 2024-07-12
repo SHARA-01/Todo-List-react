@@ -7,7 +7,6 @@ const fetchUserPlaylists = async (uid) => {
         const playlistsRef = collection(db, 'toDoList', uid, 'ToDoLists');
         const playlistsSnapshot = await getDocs(playlistsRef);
         const playlists = [];
-        console.log(playlistsSnapshot)
         playlistsSnapshot.forEach((doc) => {
             playlists.push({ id: doc.id, ...doc.data() });
         });
@@ -23,7 +22,6 @@ const fetchTasksForPlaylist = async (uid, playlistTitle) => {
         const taskListRef = collection(db, 'toDoList', uid, 'ToDoLists', playlistTitle, 'taskList');
         const taskListSnapshot = await getDocs(taskListRef);
         const tasks = {};
-        console.log(taskListSnapshot)
         taskListSnapshot.forEach((doc) => {
             tasks[doc.id] = doc.data();
         });

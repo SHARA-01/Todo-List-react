@@ -4,7 +4,7 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { updatedragTodoList } from '../firebase/firebase';
 import { Slide, toast } from 'react-toastify';
 
-function DragDrop({ taskColumbs, ListName, userUid }) {
+function DragDrop({ taskColumbs, ListName, userUid, ListId, onChangeONDragTask, taskPriority, listTaskAddedStatus, onlistTaskAddedStatu }) {
     const [taskColumb, setTaskColumb] = useState(taskColumbs && taskColumbs);
     const [isListUpdated, setIsListUpdated] = useState(false);
 
@@ -28,18 +28,57 @@ function DragDrop({ taskColumbs, ListName, userUid }) {
                 }
             }
         };
-
         updateData();
     }, [taskColumb, userUid, ListName, isListUpdated]);
 
-    const onDragEnd = (result, taskColumb, setTaskColumb) => {
-        if (!result.destination) return;
-        const { source, destination } = result;
+    const findItemById = (id, columns) => {
+        for (const columnId in columns) {
+            const column = columns[columnId];
+            const item = column.items.find(item => item.id === id);
+            if (item) {
+                return item;
+            }
+        }
+        return null;
+    };
 
+
+    const onDragStart = (start) => {
+        const { source, draggableId } = start;
+        taskPriority(source?.droppableId)
+        const item = findItemById(draggableId, taskColumb); // Implement findItemById to locate the item in taskColumb
+        onChangeONDragTask(item);
+    };
+
+
+    const onDragEnd = (result, taskColumb, setTaskColumb) => {
+        if (!result.destination && listTaskAddedStatus !== false) {
+            const { source } = result;
+            const sourceColumn = taskColumb[source.droppableId];
+            console.log('source col', sourceColumn)
+            const sourceItems = [...sourceColumn.items]
+            console.log('source items', sourceItems)
+            const [removed] = sourceItems.splice(source.index, 1);
+            setTaskColumb({
+                ...taskColumb, [source.droppableId]: {
+                    ...sourceColumn,
+                    items: sourceItems
+                }
+            })
+            toast.warn('list task removed successfully')
+            onlistTaskAddedStatu(false)
+            taskPriority('')
+            setIsListUpdated(true)
+            return;
+        }
+
+        const { source, destination } = result;
         if (source.droppableId !== destination.droppableId) {
             const sourceColumn = taskColumb[source.droppableId];
             const destColumn = taskColumb[destination.droppableId];
             const sourceItems = [...sourceColumn.items];
+            onChangeONDragTask('')
+            taskPriority('')
             const destItems = [...destColumn.items];
             const [removed] = sourceItems.splice(source.index, 1);
             destItems.splice(destination.index, 0, removed);
@@ -55,6 +94,8 @@ function DragDrop({ taskColumbs, ListName, userUid }) {
                 },
             });
         } else {
+            onChangeONDragTask('')
+            taskPriority('')
             const column = taskColumb[source.droppableId];
             const copiedItems = [...column.items];
             const [removed] = copiedItems.splice(source.index, 1);
@@ -67,12 +108,11 @@ function DragDrop({ taskColumbs, ListName, userUid }) {
                 },
             });
         }
-
         setIsListUpdated(true);
     };
 
     return (
-        <DragDropContext onDragEnd={(result) => onDragEnd(result, taskColumb, setTaskColumb)}>
+        <DragDropContext onDragStart={onDragStart} onDragEnd={(result) => onDragEnd(result, taskColumb, setTaskColumb)}>
             <div className="flex justify-between react-beautiful-dnd-draggable">
                 {taskColumb && Object.entries(taskColumb).map(([columnId, column]) => (
                     <Droppable key={columnId} droppableId={columnId}>
@@ -96,9 +136,6 @@ function DragDrop({ taskColumbs, ListName, userUid }) {
                                                 {...provided.dragHandleProps}
                                                 className=" bg-white border rounded-md border-gray-400 "
                                             >
-                                                {
-                                                    console.log(column)
-                                                }
                                                 <TaskCard item={item} index={index} itemCol={column?.title} />
                                             </div>
                                         )}

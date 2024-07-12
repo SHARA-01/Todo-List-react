@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import DragDrop from './Drap&Drop';
 import { onAuthStateChanged } from '../firebase/CheckAuth'
-import { auth, } from '../firebase/firebase';
+import { auth, deleteTaskFromTaskColumn, } from '../firebase/firebase';
 import { Bounce, toast } from 'react-toastify';
 import { addtodolistbyName } from '../firebase/AddList';
-import { addTaskToTaskColumn } from '../firebase/addtask';
+import { addTaskColumAfterDelete, addTaskToTaskColumn } from '../firebase/addtask';
 import { fetchUserPlaylists, fetchTasksForPlaylist } from '../firebase/fetchListData';
 
 function ListAndTask() {
+    const [user, setUser] = useState(null)
     const [toDoList, setToDoList] = useState(null)
     const [listTitle, setListTitle] = useState(null);
     const [taskTitle, setTaskTitle] = useState('');
@@ -15,8 +16,13 @@ function ListAndTask() {
     const [taskDue_date, setDueDate] = useState('');
     const [taskPriority, setPriority] = useState('Low Priority');
     const [selectTaskid, setSelectTaskId] = useState(null);
+    const [selectTaskid01, setSelectTaskId01] = useState(null);
     const [TaskColumbs, setTaskcol] = useState(null);
-    const [user, setUser] = useState(null)
+    const [hoverListId, setListId] = useState('')
+    const [dragtask, setDragTask] = useState('');
+    const [dragtaskTaskPriority, setDragTaskPriority] = useState('');
+    const hoverTimeout = useRef(null);
+    const [isTaskAddedToLists, setListTaskAddStatus] = useState(false)
 
 
     const addNewToDoList = async () => {
@@ -28,16 +34,49 @@ function ListAndTask() {
                 const res = await fetchUserPlaylists(user && user?.uid);
                 setToDoList(res);
                 setSelectTaskId(res && res[0]?.id)
+                setSelectTaskId01(res && res[1]?.id)
                 setTaskcol(null)
             }
             fetchData()
         } else {
             toast.error('List title empty. please enter List name.')
-
         }
-
     }
 
+    const handleListChange = (listid) => {
+        clearTimeout(hoverTimeout.current);
+        hoverTimeout.current = setTimeout(() => {
+            if (listid === selectTaskid) return
+            else setListId(listid); // Call the taskPriority function after 1 second
+        }, 1000);
+    };
+
+
+    useEffect(() => {
+        let timeofcall = 1;
+        const dragTaskAddToPlayList = async () => {
+            if (user !== null && dragtaskTaskPriority !== '' && dragtask !== '' && hoverListId !== '') {
+                await addTaskToTaskColumn({ uid: user?.uid, toDoListName: hoverListId, columnName: dragtaskTaskPriority, taskTitle: dragtask?.title, taskDes: dragtask?.Task_des, DueDate: dragtask?.due_date, taskPriority: taskPriority })
+                setDueDate('')
+                setTaskTitle('')
+                setTaskDes('')
+                toast.success(`Task Add To ${hoverListId}`)
+                setListTaskAddStatus(true)
+            } else {
+                return;
+            }
+        }
+
+        if (timeofcall >= 1) {
+            dragTaskAddToPlayList();
+            timeofcall = --timeofcall;
+        } else {
+            return;
+        }
+
+
+
+    }, [user, dragtaskTaskPriority, dragtask, hoverListId])
 
 
     const handleAddTask = async () => {
@@ -47,6 +86,7 @@ function ListAndTask() {
             setTaskTitle('')
             setTaskDes('')
             toast.success(`Task Added to List: ${selectTaskid}`)
+
             const fetchDataOfTasks = async () => {
                 const res = await fetchTasksForPlaylist(user?.uid, selectTaskid);
                 setTaskcol(res)
@@ -90,12 +130,14 @@ function ListAndTask() {
                 const res = await fetchTasksForPlaylist(user?.uid, selectTaskid);
                 setTaskcol(res);
             } else {
-                console.log('No data available', user?.uid, selectTaskid);
+                return;
             }
         };
 
         fetch();
-    }, [user, selectTaskid]);
+    }, [user, selectTaskid, selectTaskid01]);
+
+
 
     return (
         <div className='mx-12 my-5 '>
@@ -114,13 +156,13 @@ function ListAndTask() {
                         <hr className='h-1 bg-gray-600 rounded-md mx-2 w-[15%]' />
                         <hr className='h-1 bg-gray-600 rounded-md w-[3%]' />
                     </span>
-                    <ul className='grid grid-rows-5 grid-flow-col space-y-1 space-x-1'>
+                    <ul className='grid grid-rows-5 grid-flow-col space-y-1 space-x-1' onMouseUp={() => setDragTask('')}>
                         <li className='hidden'></li>
                         {
                             toDoList === null ? ' ' :
                                 toDoList.map((item, index) => (
                                     <div key={item?.id}>
-                                        <li onClick={() => setSelectTaskId(item?.id)} className={`border hover:bg-blue-500 hover:text-white rounded-md px-2 py-1 hover:ring-1 hover:ring-blue-400 ${selectTaskid === item?.id ? "bg-blue-500 text-white ring-1 ring-blue-500 font-semibold" : ''}`}>{item.title}</li>
+                                        <li onMouseEnter={() => handleListChange(item?.title)} onMouseLeave={() => { setListId(''), clearTimeout(hoverTimeout.current); }} onClick={() => setSelectTaskId(item?.id)} className={`border hover:bg-blue-500 hover:text-white rounded-md px-2 py-1 hover:ring-1 hover:ring-blue-400 ${selectTaskid === item?.id ? "bg-blue-500 text-white ring-1 ring-blue-500 font-semibold" : ''}`}>{item.title}</li>
                                     </div>
                                 ))
                         }
@@ -154,8 +196,9 @@ function ListAndTask() {
             </div>
             <div>
                 {
-                    TaskColumbs === null ? '' : <DragDrop taskColumbs={TaskColumbs && TaskColumbs} ListName={selectTaskid && selectTaskid} userUid={user && user?.uid} />
+                    TaskColumbs === null ? '' : <DragDrop taskColumbs={TaskColumbs && TaskColumbs} ListName={selectTaskid && selectTaskid} userUid={user && user?.uid} ListId={hoverListId} onChangeONDragTask={setDragTask} taskPriority={setDragTaskPriority} listTaskAddedStatus={isTaskAddedToLists} onlistTaskAddedStatu={setListTaskAddStatus} />
                 }
+
             </div>
         </div>
     )

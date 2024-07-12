@@ -2,10 +2,10 @@ import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { logOut } from '../firebase/firebase'
 import { toast } from 'react-toastify'
+
 function Navbar({ user }) {
     const location = useLocation();
     const pathname = location.pathname.slice(1)
-    console.log(pathname)
 
     const handleLogout = () => {
         let response = logOut()
@@ -17,7 +17,6 @@ function Navbar({ user }) {
     }
 
     return (
-
         <ul className='flex space-x-5 justify-end px-8 py-1 shadow-md'>
             {
                 user ?
@@ -28,12 +27,8 @@ function Navbar({ user }) {
                     <li className='py-1 align-middle'>
                         <Link className='bg-blue-400 px-3 text-sm py-1 font-semibold text-white rounded-md hover:text-blue-500 hover:bg-white hover:border hover:border-blue-400' to={pathname && pathname === 'login' ? '/register' : '/login'}>{pathname && pathname === 'login' ? "Register" : 'Login'}</Link>
                     </li>
-
             }
-
-
         </ul>
-
     )
 }
 
