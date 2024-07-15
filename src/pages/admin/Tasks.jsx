@@ -9,12 +9,10 @@ function Tasks() {
         const fetch = () => {
             const taskList = [];
             taskLists[0]?.forEach(async (item) => {
-                // console.log(item?.uid, item?.title)
                 const res = await fetchTasksForPlaylist(item?.uid, item?.title);
                 taskList.push(res)
             })
             setTasks(taskList)
-            // console.log('task fetched')
         }
         fetch()
     }, [taskLists])

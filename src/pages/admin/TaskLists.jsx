@@ -5,9 +5,6 @@ import { StateContext } from '../../context/adminContext'
 
 function TaskLists() {
     const { taskLists, setTasks, tasks } = useContext(StateContext);
-    console.log(taskLists)
-    console.log(tasks)
-
     return (
         <table className='w-full flex flex-col'>
             <thead>
