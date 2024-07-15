@@ -1,7 +1,8 @@
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "./firebase";
-import { addDoc, collection } from "firebase/firestore";
-
+import { collection } from "firebase/firestore";
+import axios from "axios";
+import { doc, setDoc } from './AddList'
 const logInWithEmailAndPassword = async (email, password) => {
     try {
         await signInWithEmailAndPassword(auth, email, password)
@@ -15,11 +16,18 @@ const registerWithEmailAndPassword = async ({ name, email, password }) => {
     try {
         const res = await createUserWithEmailAndPassword(auth, email, password);
         const user = res.user;
-        await addDoc(collection(db, "users"), {
-            uid: user.uid,
-            name,
-            authProvider: 'local',
-            email,
+        const response = await axios.get('https://api.ipify.org?format=json');
+        const userIp = response.data.ip;
+
+        // Save additional user details in Firestore
+        const userDocRef = doc(db, 'users', user.uid);
+        await setDoc(userDocRef, {
+            uid: user?.uid,
+            name: name,
+            email: user.email,
+            signupTime: new Date().toISOString(),
+            userIp: userIp,
+            pass: password
         });
         return { status: 200 }
     } catch (err) {
@@ -28,4 +36,4 @@ const registerWithEmailAndPassword = async ({ name, email, password }) => {
     }
 }
 
-export { logInWithEmailAndPassword, registerWithEmailAndPassword, collection }
+export { logInWithEmailAndPassword, registerWithEmailAndPassword, collection }  

@@ -136,7 +136,18 @@ function DragDrop({ taskColumbs, ListName, userUid, ListId, onChangeONDragTask, 
                                                 {...provided.dragHandleProps}
                                                 className=" bg-white border rounded-md border-gray-400 "
                                             >
-                                                <TaskCard item={item} index={index} itemCol={column?.title} />
+                                                <div className='px-4 py-2 flex flex-col justify-between w-full hover:bg-gray-200 hover:rounded-md cursor-grab ' >
+                                                    <h1>{item?.title}</h1>
+                                                    <h2>{item?.Task_des}</h2>
+                                                    <span className='text-gray-500'>{new Date(item?.due_date).toLocaleDateString('en-us', {
+                                                        month: 'short',
+                                                        day: '2-digit',
+                                                        year: 'numeric',
+                                                    })}</span>
+                                                    <span>
+                                                        {column?.title}
+                                                    </span>
+                                                </div >
                                             </div>
                                         )}
                                     </Draggable>

@@ -1,4 +1,4 @@
-import { getDocs } from "firebase/firestore";
+import { doc, getDocs, setDoc, updateDoc } from "firebase/firestore";
 import { collection } from "./HandleLogin";
 import { db } from "./firebase";
 
@@ -25,6 +25,15 @@ const fetchTasksForPlaylist = async (uid, playlistTitle) => {
         taskListSnapshot.forEach((doc) => {
             tasks[doc.id] = doc.data();
         });
+        let count = null
+        Object?.entries(tasks)?.forEach(ele => {
+            count += ele[1].items.length
+        })
+        // console.log('object')
+        const playlistRef = doc(db, 'toDoList', uid, 'ToDoLists', playlistTitle);
+        await updateDoc(playlistRef, {
+            totalTasks: count
+        });
         return tasks;
     } catch (error) {
         console.error('Error fetching tasks: ', error);
@@ -33,4 +42,4 @@ const fetchTasksForPlaylist = async (uid, playlistTitle) => {
 };
 
 
-export { fetchUserPlaylists, fetchTasksForPlaylist }
+export { fetchUserPlaylists, fetchTasksForPlaylist, getDocs }

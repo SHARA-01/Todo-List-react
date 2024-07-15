@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, signOut } from 'firebase/auth';
-import { deleteDoc, getFirestore } from 'firebase/firestore';
+import { getFirestore, updateDoc } from 'firebase/firestore';
 import { collection } from "./HandleLogin";
 import { doc, setDoc } from './AddList';
 
@@ -24,31 +24,24 @@ const logOut = () => {
   signOut(auth);
 }
 
-const updatedragTodoList = async ({ uid, toDoListName, newList }) => {
+const updatedragTodoList = async ({ uid, toDoListName, newList, userEmail }) => {
   const playlistRef = doc(db, 'toDoList', uid, 'ToDoLists', toDoListName);
   const taskListRef = collection(playlistRef, 'taskList');
-
   try {
     for (const [columnName, columnData] of Object.entries(newList)) {
       const columnRef = doc(taskListRef, columnName);
       await setDoc(columnRef, { items: columnData.items }, { merge: true });
     }
+    await updateDoc(playlistRef, {
+      updatedAt: new Date()
+    });
   } catch (error) {
     console.log(error)
   }
 }
 
-const deleteTaskFromTaskColumn = async ({ uid, toDoListName, columnName, taskId }) => {
-  try {
-    const taskDocRef = doc(db, 'toDoList', uid, 'ToDoLists', toDoListName, 'taskList', columnName, 'items', taskId);
-    await deleteDoc(taskDocRef)
-  } catch (error) {
-    console.error('Error deleting task: ', error);
-  }
-};
 
 
 
-
-export { updatedragTodoList, auth, db, logOut, deleteTaskFromTaskColumn }
+export { updatedragTodoList, auth, db, logOut }
 

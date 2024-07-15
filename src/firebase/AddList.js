@@ -21,18 +21,21 @@ const predefinedTaskColumns = {
     }
 };
 
-const addtodolistbyName = async (uid, playlistTitle) => {
+const addtodolistbyName = async (uid, playlistTitle, userEmail) => {
     try {
         const userTodoListRef = collection(db, 'toDoList', uid, 'ToDoLists');
         const playlistRef = doc(userTodoListRef, playlistTitle);
         await setDoc(playlistRef, {
             title: playlistTitle,
+            createdBy: userEmail,
+            uid: uid,
+            createedAt: new Date(),
+            updatedAt: new Date()
         });
         const taskListRef = collection(playlistRef, 'taskList');
         for (const [key, value] of Object.entries(predefinedTaskColumns)) {
             await setDoc(doc(taskListRef, key), value);
         }
-
         console.log('Playlist initialized successfully');
     } catch (error) {
         console.error('Error initializing playlist: ', error);

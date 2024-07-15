@@ -17,12 +17,17 @@ function Navbar({ user }) {
     }
 
     return (
-        <ul className='flex space-x-5 justify-end px-8 py-1 shadow-md'>
+        <ul className='flex justify-end px-8 py-1 shadow-md'>
             {
-                user ?
+                user ? <div className='flex space-x-4 justify-end py-1 px-5'>
+                    <li className='py-1 align-middle'>
+                        <Link to={pathname && pathname !== 'list' ? '/list' : '/admin'}><button className='bg-blue-400 px-3 text-sm py-1 font-semibold text-white rounded-md hover:text-blue-500 hover:bg-white hover:border hover:border-blue-400'>{pathname && pathname !== 'list' ? "Home" : "Admin DashBoard"}</button></Link>
+                        {/* <Link className='bg-blue-400 px-3 text-sm py-1 font-semibold text-white rounded-md hover:text-blue-500 hover:bg-white hover:border hover:border-blue-400 align-middle' ></Link> */}
+                    </li>
                     <li className='py-1 align-middle'>
                         <button className='bg-blue-400 px-3 text-sm py-1 font-semibold text-white rounded-md hover:text-blue-500 hover:bg-white hover:border hover:border-blue-400' onClick={() => { handleLogout() }}>Logout</button>
                     </li>
+                </div>
                     :
                     <li className='py-1 align-middle'>
                         <Link className='bg-blue-400 px-3 text-sm py-1 font-semibold text-white rounded-md hover:text-blue-500 hover:bg-white hover:border hover:border-blue-400' to={pathname && pathname === 'login' ? '/register' : '/login'}>{pathname && pathname === 'login' ? "Register" : 'Login'}</Link>

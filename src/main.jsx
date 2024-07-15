@@ -8,6 +8,12 @@ import MainLayout from './layout/MainLayout'
 import List from './pages/List'
 import NotFound from './pages/404'
 import PrivateRouter from './router/PrivateRouter'
+import AdminDashboard from './pages/AdminDashboard'
+import Users from './pages/admin/Users'
+import TaskLists from './pages/admin/TaskLists'
+import Tasks from './pages/admin/Tasks'
+
+
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -16,6 +22,11 @@ const router = createBrowserRouter(
       <Route path="/register" element={<Register />} />
       <Route path='/' element={<PrivateRouter />} >
         <Route path="/list" element={<List />} />
+        <Route path="/admin" element={<AdminDashboard />} >
+          <Route path='users' element={<Users />} />
+          <Route path='taskList' element={<TaskLists />} />
+          <Route path='tasks' element={<Tasks />} />
+        </Route>
       </Route>
       <Route path='*' element={<NotFound />} />
     </Route>

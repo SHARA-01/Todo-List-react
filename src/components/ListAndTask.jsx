@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
 import DragDrop from './Drap&Drop';
 import { onAuthStateChanged } from '../firebase/CheckAuth'
-import { auth, deleteTaskFromTaskColumn, } from '../firebase/firebase';
+import { auth } from '../firebase/firebase';
 import { Bounce, toast } from 'react-toastify';
 import { addtodolistbyName } from '../firebase/AddList';
-import { addTaskColumAfterDelete, addTaskToTaskColumn } from '../firebase/addtask';
+import { addTaskToTaskColumn } from '../firebase/addtask';
 import { fetchUserPlaylists, fetchTasksForPlaylist } from '../firebase/fetchListData';
 
 function ListAndTask() {
@@ -24,10 +24,9 @@ function ListAndTask() {
     const hoverTimeout = useRef(null);
     const [isTaskAddedToLists, setListTaskAddStatus] = useState(false)
 
-
     const addNewToDoList = async () => {
         if (listTitle !== '' && listTitle !== null) {
-            await addtodolistbyName(user?.uid, listTitle);
+            await addtodolistbyName(user?.uid, listTitle, user?.email);
             setListTitle('')
             toast.success('To-do list added successfully.')
             const fetchData = async () => {
@@ -138,7 +137,6 @@ function ListAndTask() {
     }, [user, selectTaskid, selectTaskid01]);
 
 
-
     return (
         <div className='mx-12 my-5 '>
             <div className='flex justify-between space-x-1 '>
@@ -159,7 +157,7 @@ function ListAndTask() {
                     <ul className='grid grid-rows-5 grid-flow-col space-y-1 space-x-1' onMouseUp={() => setDragTask('')}>
                         <li className='hidden'></li>
                         {
-                            toDoList === null ? ' ' :
+                            toDoList === null ? '' :
                                 toDoList.map((item, index) => (
                                     <div key={item?.id}>
                                         <li onMouseEnter={() => handleListChange(item?.title)} onMouseLeave={() => { setListId(''), clearTimeout(hoverTimeout.current); }} onClick={() => setSelectTaskId(item?.id)} className={`border hover:bg-blue-500 hover:text-white rounded-md px-2 py-1 hover:ring-1 hover:ring-blue-400 ${selectTaskid === item?.id ? "bg-blue-500 text-white ring-1 ring-blue-500 font-semibold" : ''}`}>{item.title}</li>
