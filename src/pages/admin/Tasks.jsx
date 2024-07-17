@@ -4,7 +4,7 @@ import { fetchTasksForPlaylist } from '../../firebase/fetchListData';
 
 
 function Tasks() {
-    const { tasks, setTasks, taskLists, taskList } = useContext(StateContext);
+    const { taskLists } = useContext(StateContext);
     const [taskData, setTaskData] = useState([])
     const [loading, setLoading] = useState(true)
 
@@ -43,13 +43,15 @@ function Tasks() {
 
     }, [taskLists])
 
-    const formatTimestamp = (timestamp) => {
-        if (!timestamp) return '';
-        const date = new Date(timestamp.seconds * 1000);
+    const TimeFormat = (time) => {
+        if (!time) return '';
+        const date = new Date(time.seconds * 1000);
         return date.toLocaleDateString('en-us', {
             month: 'short',
             day: '2-digit',
             year: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric'
         });
     };
 
@@ -76,7 +78,7 @@ function Tasks() {
                                         <td className='w-1/5'>{ele?.Task_des}</td>
                                         <td className='w-1/5'>{ele?.list}</td>
                                         <td className='w-1/5'>{ele?.by}</td>
-                                        <td className='w-1/5'>{formatTimestamp(ele?.createdAt)}</td>
+                                        <td className='w-1/5'>{TimeFormat(ele?.createdAt)}</td>
                                     </tr>
                                 ))
                             }

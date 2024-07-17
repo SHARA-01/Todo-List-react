@@ -4,9 +4,19 @@ import { StateContext } from '../../context/adminContext'
 
 
 function TaskLists() {
-    const { taskLists, setTasks, tasks } = useContext(StateContext);
+    const { taskLists } = useContext(StateContext);
 
-    console.log(taskLists)
+    const TimeFormat = (time) => {
+        if (!time) return '';
+        const date = new Date(time.seconds * 1000);
+        return date.toLocaleDateString('en-us', {
+            month: 'short',
+            day: '2-digit',
+            year: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric'
+        });
+    };
 
     return (
         <table className='w-full flex flex-col'>
@@ -28,8 +38,8 @@ function TaskLists() {
                                 <td className='w-1/5 text-left'>{newitem?.title}</td>
                                 <td className='w-1/5'>{newitem?.createdBy}</td>
                                 <td className='w-1/5'>{newitem?.totalTasks}</td>
-                                <td className='w-1/5'>{Date(newitem?.createdAt).slice(3, 15)}</td>
-                                <td className='w-1/5'>{Date(newitem?.updatedAt).slice(3, 15)}</td>
+                                <td className='w-1/5'>{TimeFormat(newitem?.createedAt)}</td>
+                                <td className='w-1/5'>{TimeFormat(newitem?.updatedAt)}</td>
                             </tr>
                         ))
                     ))

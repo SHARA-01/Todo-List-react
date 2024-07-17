@@ -3,13 +3,11 @@ import { Link, Outlet } from 'react-router-dom'
 import { StateContext } from '../context/adminContext'
 import { db } from '../firebase/firebase'
 import { collection } from "../firebase/HandleLogin";
-import { fetchTasksForPlaylist, fetchUserPlaylists, getDocs } from "../firebase/fetchListData";
 
 function AdminDashboard() {
     const [users, setUsers] = useState([])
     const [taskLists, setTaskLists] = useState([])
     const [tasks, setTasks] = useState([])
-    const [taskList, setTaskList] = useState([]);
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -41,7 +39,7 @@ function AdminDashboard() {
 
 
     return (
-        <StateContext.Provider value={{ users, setUsers, taskLists, setTaskLists, tasks, setTasks, taskList }} >
+        <StateContext.Provider value={{ users, setUsers, taskLists, setTaskLists, tasks, setTasks }} >
             <div className='w-[100cw] my-3 mx-4 border-2 border-gray-400 rounded-md p-3 min-h-[90vh] max-h-[90vh] overflow-hidden flex' >
                 <ul className='w-1/5 border-r-2  border-gray-400 justify-center px-5 space-y-3 min-h-[80vh] sticky top-5  py-5'>
                     <span className=' font-bold text-xl text-gray-600'>Admin DashBoard</span>

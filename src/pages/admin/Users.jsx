@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { StateContext } from '../../context/adminContext'
 
 function Users() {
-    const { users } = useContext(StateContext)
+    const { users } = useContext(StateContext);
     return (
         <table className='w-full flex flex-col'>
             <thead >
