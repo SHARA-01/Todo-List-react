@@ -29,7 +29,6 @@ const fetchTasksForPlaylist = async (uid, playlistTitle) => {
         Object?.entries(tasks)?.forEach(ele => {
             count += ele[1].items.length
         })
-        // console.log('object')
         const playlistRef = doc(db, 'toDoList', uid, 'ToDoLists', playlistTitle);
         await updateDoc(playlistRef, {
             totalTasks: count

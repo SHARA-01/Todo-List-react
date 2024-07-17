@@ -36,7 +36,6 @@ const addtodolistbyName = async (uid, playlistTitle, userEmail) => {
         for (const [key, value] of Object.entries(predefinedTaskColumns)) {
             await setDoc(doc(taskListRef, key), value);
         }
-        console.log('Playlist initialized successfully');
     } catch (error) {
         console.error('Error initializing playlist: ', error);
     }

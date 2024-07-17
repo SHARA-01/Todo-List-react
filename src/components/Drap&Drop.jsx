@@ -55,9 +55,7 @@ function DragDrop({ taskColumbs, ListName, userUid, ListId, onChangeONDragTask, 
         if (!result.destination && listTaskAddedStatus !== false) {
             const { source } = result;
             const sourceColumn = taskColumb[source.droppableId];
-            console.log('source col', sourceColumn)
             const sourceItems = [...sourceColumn.items]
-            console.log('source items', sourceItems)
             const [removed] = sourceItems.splice(source.index, 1);
             setTaskColumb({
                 ...taskColumb, [source.droppableId]: {

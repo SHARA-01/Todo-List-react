@@ -16,8 +16,6 @@ const addTaskToTaskColumn = async ({ uid, toDoListName, columnName, taskTitle, t
         await updateDoc(playlistRef, {
             updatedAt: new Date()
         });
-        console.log('task add successfully')
-
     } catch (error) {
         console.log(error)
     }

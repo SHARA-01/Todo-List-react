@@ -1,66 +1,90 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { StateContext } from '../../context/adminContext'
 import { fetchTasksForPlaylist } from '../../firebase/fetchListData';
 
 
 function Tasks() {
-    const { tasks, setTasks, taskLists } = useContext(StateContext);
+    const { tasks, setTasks, taskLists, taskList } = useContext(StateContext);
+    const [taskData, setTaskData] = useState([])
+    const [loading, setLoading] = useState(true)
+
     useEffect(() => {
-        const fetch = () => {
-            const taskList = [];
-            taskLists[0]?.forEach(async (item) => {
-                const res = await fetchTasksForPlaylist(item?.uid, item?.title);
-                taskList.push(res)
+        const fetchTasks = async () => {
+            const FetchedTasks = [];
+            for (const item of taskLists) {
+                if (taskLists.length > 1) {
+                    for (const ele2 of item) {
+                        const res = await fetchTasksForPlaylist(ele2?.uid, ele2?.title);
+                        FetchedTasks.push({ title: ele2?.title, By: ele2?.createdBy, data: res });
+                    }
+                } else {
+                    const res = await fetchTasksForPlaylist(item?.uid, item?.title);
+                    FetchedTasks.push({ title: item?.title, By: item?.createdBy, data: res });
+                }
+            }
+            let TaskArray = [];
+            FetchedTasks.forEach(ele3 => {
+                Object.values(ele3?.data).forEach(ele3Item => {
+                    if (ele3Item?.items.length !== 0) {
+                        ele3Item?.items.forEach(ele => {
+                            TaskArray.push({ ...ele, list: ele3?.title, by: ele3?.By })
+                        })
+                    } else {
+                        console.log()
+                    }
+                    setTaskData(TaskArray)
+                    setLoading(false)
+                })
             })
-            setTasks(taskList)
-        }
-        fetch()
+
+        };
+
+        fetchTasks();
+
     }, [taskLists])
 
+    const formatTimestamp = (timestamp) => {
+        if (!timestamp) return '';
+        const date = new Date(timestamp.seconds * 1000);
+        return date.toLocaleDateString('en-us', {
+            month: 'short',
+            day: '2-digit',
+            year: 'numeric',
+        });
+    };
 
     return (
-        // <div>
-        //     <table className='w-full flex flex-col'>
-        //         <thead>
-        //             <tr className='flex w-full border rounded-md shadow-md py-2 px-5 text-gray-600 text-center bg-white sticky top-px'>
-        //                 <th className='w-1/5 text-left'>TaskList Title</th>
-        //                 <th className='w-1/5'>Creadted By</th>
-        //                 <th className='w-1/5'>No of Tasks</th>
-        //                 <th className='w-1/5'>Creation Time</th>
-        //                 <th className='w-1/5'>Last Updated</th>
-        //             </tr>
-        //         </thead>
-        //         <tbody>{
-        //             tasks?.forEach(item => {
-        //                 console.log(item)
-        //                 Object.entries(item).forEach(value => {
-        //                     console.log(value)
-        //                     value[1].items?.map((data, index) => (
-        //                         <tr key={index}>
-        //                             {console.log('data', data)}
-        //                             <td>{data?.title}</td>
-        //                             {/* <td>{data.createdBy}</td> */}
-        //                             {/* <td>{data.totalTasks}</td> */}
-        //                             {/* <td>{new Date(data.createdAt).toLocaleDateString('en-us', {
-        //                                 month: 'short',
-        //                                 day: '2-digit',
-        //                                 year: 'numeric',
-        //                             })}</td> */}
-        //                             {/* <td>{new Date(data.updatedAt).toLocaleDateString('en-us', {
-        //                                 month: 'short',
-        //                                 day: '2-digit',
-        //                                 year: 'numeric',
-        //                             })}</td> */}
-        //                         </tr>
-        //                     ))
-        //                 })
-        //             })}
-        //         </tbody>
-        //     </table>
-        // </div >
         <div>
-            Tasks page
-        </div>
+            <table className='w-full flex flex-col'>
+                <thead>
+                    <tr className='flex w-full border rounded-md shadow-md py-2 px-5 text-gray-600 text-center bg-white sticky top-px'>
+                        <th className='w-1/5 text-left'>Title</th>
+                        <th className='w-1/5'>Description</th>
+                        <th className='w-1/5'>List Title</th>
+                        <th className='w-1/5'>CreatedBy</th>
+                        <th className='w-1/5'>CreatedAt</th>
+                    </tr>
+                </thead>
+                {
+                    loading ? <tbody className='w-full text-center'><tr className='flex w-full border rounded-md py-2 px-5  my-1 font-bold text-blue-500 justify-center'>Loading </tr></tbody>
+                        :
+                        <tbody>
+                            {
+                                taskData?.map((ele, index) => (
+                                    <tr key={index} className='flex w-full border rounded-md py-2 px-5 text-gray-600 text-center my-1'>
+                                        <td className='w-1/5 text-left'>{ele?.title}</td>
+                                        <td className='w-1/5'>{ele?.Task_des}</td>
+                                        <td className='w-1/5'>{ele?.list}</td>
+                                        <td className='w-1/5'>{ele?.by}</td>
+                                        <td className='w-1/5'>{formatTimestamp(ele?.createdAt)}</td>
+                                    </tr>
+                                ))
+                            }
+                        </tbody>
+                }
+            </table>
+        </div >
+
     )
 }
 

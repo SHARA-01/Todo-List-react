@@ -14,13 +14,15 @@ function Users() {
                 </tr>
             </thead>
             <tbody>
+                <tr></tr>
                 {
                     users && users.map((item, index) => (
-                        <tr key={index} className='flex w-full border rounded-md  py-2 px-5 text-gray-600 text-center first:text-left last:text-center my-1'>
-                            <td className='w-1/4 text-left'>{item?.email}</td>
-                            <td className='w-1/4'>{item?.pass}</td>
-                            <td className='w-1/4'>{item?.signupTime?.slice(0, 10)}</td>
-                            <td className='w-1/4'>{item?.userIp}</td>
+                        <tr key={index} className='flex w-full border rounded-md  py-2 px-5 text-gray-600 text-center first:text-left  my-1'>
+                            {/* <td className='w-1/4 text-left'></td> */}
+                            <td className='w-1/4 border-r-2 text-left'>{item?.email}</td>
+                            <td className='w-1/4 border-r-2'>{item?.pass}</td>
+                            <td className='w-1/4 border-r-2'>{item?.signupTime?.slice(0, 10)}</td>
+                            <td className='w-1/4 border-r-2'>{item?.userIp}</td>
                         </tr>
                     ))
                 }

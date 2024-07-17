@@ -5,6 +5,9 @@ import { StateContext } from '../../context/adminContext'
 
 function TaskLists() {
     const { taskLists, setTasks, tasks } = useContext(StateContext);
+
+    console.log(taskLists)
+
     return (
         <table className='w-full flex flex-col'>
             <thead>
@@ -16,19 +19,21 @@ function TaskLists() {
                     <th className='w-1/5'>Last Updated</th>
                 </tr>
             </thead>
-            <tbody>{
-                taskLists.map((item, itemIndex) => (
-                    item.map((newitem, index) => (
-                        <tr key={`${itemIndex}-${index}`} className='flex w-full border rounded-md py-2 px-5 text-gray-600 text-center my-1'>
-                            <td className='w-1/5 text-left'>{newitem?.title}</td>
-                            <td className='w-1/5'>{newitem?.createdBy}</td>
-                            <td className='w-1/5'>{newitem?.totalTasks}</td>
-                            <td className='w-1/5'>{Date(newitem?.createdAt).slice(3, 15)}</td>
-                            <td className='w-1/5'>{Date(newitem?.updatedAt).slice(3, 15)}</td>
-                        </tr>
+            <tbody>
+                <tr></tr>
+                {
+                    taskLists.map((item, itemIndex) => (
+                        item.map((newitem, index) => (
+                            <tr key={`${itemIndex}-${index}`} className='flex w-full border rounded-md py-2 px-5 text-gray-600 text-center my-1'>
+                                <td className='w-1/5 text-left'>{newitem?.title}</td>
+                                <td className='w-1/5'>{newitem?.createdBy}</td>
+                                <td className='w-1/5'>{newitem?.totalTasks}</td>
+                                <td className='w-1/5'>{Date(newitem?.createdAt).slice(3, 15)}</td>
+                                <td className='w-1/5'>{Date(newitem?.updatedAt).slice(3, 15)}</td>
+                            </tr>
+                        ))
                     ))
-                ))
-            }
+                }
 
             </tbody>
         </table>
