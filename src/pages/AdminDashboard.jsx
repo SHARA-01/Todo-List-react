@@ -3,6 +3,7 @@ import { Link, Outlet } from 'react-router-dom'
 import { StateContext } from '../context/adminContext'
 import { db } from '../firebase/firebase'
 import { collection } from "../firebase/HandleLogin";
+import { fetchUserPlaylists, getDocs } from "../firebase/fetchListData";
 
 function AdminDashboard() {
     const [users, setUsers] = useState([])
