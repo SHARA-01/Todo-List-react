@@ -11,8 +11,8 @@ const firebaseConfig = {
   projectId: "todo-5dcb2",
   storageBucket: "todo-5dcb2.firebasestorage.app",
   messagingSenderId: "629049005833",
-  appId: "1:629049005833:web:d3536b0de8465ae272a5d8",
-  measurementId: "G-RMC16RV94J"
+  appId: "1:629049005833:web:4761543ea7effbc072a5d8",
+  measurementId: "G-GFNSH5MFXW"
 };
 
 const app = initializeApp(firebaseConfig);
