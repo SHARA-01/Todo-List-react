@@ -6,13 +6,13 @@ import { doc, setDoc } from './AddList';
 
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCP1mJoDOCkoW9UcYYm2PQbEbjweWc4lOY",
-  authDomain: "todolist-7ab65.firebaseapp.com",
-  projectId: "todolist-7ab65",
-  storageBucket: "todolist-7ab65.appspot.com",
-  messagingSenderId: "220333160946",
-  appId: "1:220333160946:web:0808cb21f0fabcc9a9536b",
-  measurementId: "G-Y47ZL830X7"
+  apiKey: "AIzaSyD1acoTjhtKfo0JnSRkwTiy8t-UU-T3Ek8",
+  authDomain: "todo-5dcb2.firebaseapp.com",
+  projectId: "todo-5dcb2",
+  storageBucket: "todo-5dcb2.firebasestorage.app",
+  messagingSenderId: "629049005833",
+  appId: "1:629049005833:web:d3536b0de8465ae272a5d8",
+  measurementId: "G-RMC16RV94J"
 };
 
 const app = initializeApp(firebaseConfig);
