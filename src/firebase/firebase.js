@@ -5,6 +5,7 @@ import { collection } from "./HandleLogin";
 import { doc, setDoc } from './AddList';
 
 
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyD1acoTjhtKfo0JnSRkwTiy8t-UU-T3Ek8",
   authDomain: "todo-5dcb2.firebaseapp.com",
